@@ -1,1 +1,5 @@
-<h1>test register!!!!view</h1>
+<template>
+  <div>
+    <h1>register</h1>
+  </div>
+</template>
