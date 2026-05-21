@@ -10,6 +10,7 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
+  base: '/project-2.4-frontend/',  // ← just add this line!
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
