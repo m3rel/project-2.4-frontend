@@ -3,14 +3,16 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
+    tailwindcss(),
   ],
-  base: '/project-2.4-frontend/',  // ← just add this line!
+  base: '/project-2.4-frontend/',  
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
