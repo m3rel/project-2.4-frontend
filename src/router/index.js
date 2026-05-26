@@ -1,15 +1,15 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import LoginView from '../views/auth/LoginView.vue'
 import RegisterView from '../views/auth/RegisterView.vue'
-import DashboardView from '@/views/auth/DashboardView.vue'
-
+import EmployeeDashboard from '@/views/employee/DashboardView.vue'
+import CustomerDashboard from '@/views/customer/DashboardView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      redirect: '/login'  //default route goes to login
+      redirect: '/login', //default route goes to login
     },
     {
       path: '/login',
@@ -22,21 +22,39 @@ const router = createRouter({
       component: RegisterView,
     },
     {
+    path: '/employee/dashboard',
+    name: 'employeeDashboard',
+    component: EmployeeDashboard,
+    meta: { requiresAuth: true, role: 'ROLE_EMPLOYEE' }
+},
+    {
       path: '/dashboard',
-      name: 'dashboard',
-      component: DashboardView,
-    }
+      name: 'customerDashboard',
+      component: CustomerDashboard,
+      meta: { requiresAuth: true, role: 'ROLE_CUSTOMER' }
+    },
   ],
 })
 
 // navigation guard - redirect to login if not authenticated
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, from) => {
   const token = localStorage.getItem('token')
-  
+  const role = localStorage.getItem('role')
+
+  // already logged in → don't show login/register
+  if ((to.name === 'login' || to.name === 'register') && token) {
+    if (role === 'ROLE_EMPLOYEE') return '/employee/dashboard'
+    if (role === 'ROLE_CUSTOMER') return '/customer/dashboard'
+  }
+
+  // needs auth but no token → go to login
   if (to.meta.requiresAuth && !token) {
-    next('/login')  // not logged in → go to login
-  } else {
-    next()  // all good → continue
+    return '/login'
+  }
+
+  // wrong role → go to login
+  if (to.meta.role && to.meta.role !== role) {
+    return '/login'
   }
 })
 
