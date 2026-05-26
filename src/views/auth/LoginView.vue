@@ -53,7 +53,7 @@ const error = ref('')
 
 const handleLogin = async () => {
   try {
-    const response = await axios.post('https://project-2-4-api.onrender.com/auth/login', {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, {
       email: email.value,
       password: password.value,
     })
