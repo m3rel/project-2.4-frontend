@@ -32,6 +32,11 @@
           >
             Sign In
           </button>
+
+          <p class="text-center text-sm text-gray-500 mt-4">
+            Dont have an account?
+            <router-link to="/register" class="text-gray-900 font-medium">Sign Up</router-link>
+          </p>
         </form>
       </div>
     </div>
@@ -58,7 +63,7 @@ const handleLogin = async () => {
       password: password.value,
     })
 
-    authStore.setAuth(response.data.token, response.data.role) // ← use store
+    authStore.setAuth(response.data.token, response.data.role)
 
     if (response.data.role === 'ROLE_EMPLOYEE') {
       router.push('/employee/dashboard')
