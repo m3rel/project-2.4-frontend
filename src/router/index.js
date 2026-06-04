@@ -10,29 +10,64 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login', //default route goes to login
+      redirect: '/login',
     },
     {
       path: '/login',
       name: 'login',
-      component: LoginView,
+      component: () => import('@/views/auth/LoginView.vue'),
     },
     {
       path: '/register',
       name: 'register',
-      component: RegisterView,
+      component: () => import('@/views/auth/RegisterView.vue'),
     },
     {
-    path: '/employee/dashboard',
-    name: 'employeeDashboard',
-    component: EmployeeDashboard,
-    meta: { requiresAuth: true, role: 'ROLE_EMPLOYEE' }
-},
+      path: '/employee',
+      component: () => import('@/layouts/EmployeeLayout.vue'),
+      meta: { requiresAuth: true, role: 'ROLE_EMPLOYEE' },
+      children: [
+        {
+          path: '',
+          redirect: { name: 'employeeDashboard' },
+        },
+        {
+          path: 'dashboard',
+          name: 'employeeDashboard',
+          component: () => import('@/views/employee/DashboardView.vue'),
+        },
+        {
+          path: 'users',
+          name: 'employeeUsers',
+          component: () => import('@/views/employee/UsersView.vue'),
+        },
+        {
+          path: 'accounts',
+          name: 'employeeAccounts',
+          component: () => import('@/views/employee/AccountsView.vue'),
+        },
+        {
+          path: 'transactions',
+          name: 'employeeTransactions',
+          component: () => import('@/views/employee/TransactionsView.vue'),
+        },
+      ],
+    },
     {
-      path: '/dashboard',
-      name: 'customerDashboard',
-      component: CustomerDashboard,
-      meta: { requiresAuth: true, role: 'ROLE_CUSTOMER' }
+      path: '/customer',
+      component: () => import('@/layouts/CustomerLayout.vue'),
+      meta: { requiresAuth: true, role: 'ROLE_CUSTOMER' },
+      children: [
+        {
+          path: '',
+          redirect: { name: 'customerDashboard' },
+        },
+        {
+          path: 'dashboard',
+          name: 'customerDashboard',
+          component: () => import('@/views/customer/DashboardView.vue'),
+        },
+      ],
     },
     {
       path: '/accounts',
@@ -48,25 +83,21 @@ const router = createRouter({
   ],
 })
 
-// navigation guard - redirect to login if not authenticated
 router.beforeEach((to, from) => {
   const token = localStorage.getItem('token')
   const role = localStorage.getItem('role')
 
-  // already logged in → don't show login/register
   if ((to.name === 'login' || to.name === 'register') && token) {
-    if (role === 'ROLE_EMPLOYEE') return '/employee/dashboard'
-    if (role === 'ROLE_CUSTOMER') return '/customer/dashboard'
+    if (role === 'ROLE_EMPLOYEE') return { name: 'employeeDashboard' }
+    if (role === 'ROLE_CUSTOMER') return { name: 'customerDashboard' }
   }
 
-  // needs auth but no token → go to login
   if (to.meta.requiresAuth && !token) {
-    return '/login'
+    return { name: 'login' }
   }
 
-  // wrong role → go to login
   if (to.meta.role && to.meta.role !== role) {
-    return '/login'
+    return { name: 'login' }
   }
 })
 

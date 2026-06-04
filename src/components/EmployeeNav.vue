@@ -1,32 +1,41 @@
 <template>
-  <aside class="w-64 h-screen bg-red-300 flex flex-col p-6">
-    <h1 class="font-bold text-xl mb-8">BeFRAUD.inc</h1>
+  <aside class="w-64 h-screen gradient-bg flex flex-col p-6">
+    <h1 class="text-2xl m-4">
+      <span class="font-serif">BeFRAUD.inc</span>
+    </h1>
 
-    <nav class="flex flex-col">
-      <router-link to="/users" class="p-3 rounded-lg hover:bg-red-100" active-class="bg-gray-700">
+    <nav class="flex flex-col gap-1 flex-1">
+      <router-link
+        :to="{ name: 'employeeUsers' }"
+        class="p-3 rounded-lg text-sm text-gray-700 hover:bg-white/40 transition-colors"
+        active-class="bg-white/60 font-medium text-gray-900"
+      >
         Users
       </router-link>
 
       <router-link
-        to="/accounts"
-        class="p-3 rounded-lg hover:bg-gray-700"
-        active-class="bg-gray-700"
+        :to="{ name: 'employeeAccounts' }"
+        class="p-3 rounded-lg text-sm text-gray-700 hover:bg-white/40 transition-colors"
+        active-class="bg-white/60 font-medium text-gray-900"
       >
         Accounts
       </router-link>
 
       <router-link
-        to="/transactions"
-        class="p-3 rounded-lg hover:bg-gray-700"
-        active-class="bg-gray-700"
+        :to="{ name: 'employeeTransactions' }"
+        class="p-3 rounded-lg text-sm text-gray-700 hover:bg-white/40 transition-colors"
+        active-class="bg-white/60 font-medium text-gray-900"
       >
         Transactions
       </router-link>
-
-      <button @click="handleLogout" class="mt-auto p-3 rounded-lg hover:bg-gray-700 text-left">
-        Logout
-      </button>
     </nav>
+
+    <button
+      @click="handleLogout"
+      class="p-3 rounded-lg text-sm text-gray-700 hover:bg-white/40 transition-colors text-left"
+    >
+      Logout
+    </button>
   </aside>
 </template>
 
