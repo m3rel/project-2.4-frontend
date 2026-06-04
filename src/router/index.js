@@ -3,7 +3,7 @@ import LoginView from '../views/auth/LoginView.vue'
 import RegisterView from '../views/auth/RegisterView.vue'
 import EmployeeDashboard from '@/views/employee/DashboardView.vue'
 import CustomerDashboard from '@/views/customer/DashboardView.vue'
-import AccountsView from '@/views/accounts/AccountsView.vue'
+import AccountsView from '@/views/employee/AccountsView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -47,6 +47,11 @@ const router = createRouter({
           component: () => import('@/views/employee/AccountsView.vue'),
         },
         {
+          path: '/accounts/:iban',
+          name: 'account-details',
+          component: () => import('@/views/employee/AccountDetailsView.vue')
+        },
+        {
           path: 'transactions',
           name: 'employeeTransactions',
           component: () => import('@/views/employee/TransactionsView.vue'),
@@ -68,18 +73,7 @@ const router = createRouter({
           component: () => import('@/views/customer/DashboardView.vue'),
         },
       ],
-    },
-    {
-      path: '/accounts',
-      name: 'accounts',
-      component: AccountsView,
-      meta: { requiresAuth: true }
-    },
-    {
-      path: '/accounts/:iban',
-      name: 'account-details',
-      component: () => import('@/views/accounts/AccountDetailsView.vue')
-    }
+    }    
   ],
 })
 
