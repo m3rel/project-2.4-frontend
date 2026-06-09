@@ -42,6 +42,11 @@ const router = createRouter({
           component: () => import('@/views/employee/UsersView.vue'),
         },
         {
+          path: 'users/pending',
+          name: 'employeePendingUsers',
+          component: () => import('@/views/employee/PendingApprovalView.vue'),
+        },
+        {
           path: 'accounts',
           name: 'employeeAccounts',
           component: () => import('@/views/employee/AccountsView.vue'),
@@ -49,7 +54,7 @@ const router = createRouter({
         {
           path: '/accounts/:iban',
           name: 'account-details',
-          component: () => import('@/views/employee/AccountDetailsView.vue')
+          component: () => import('@/views/employee/AccountDetailsView.vue'),
         },
         {
           path: 'transactions',
@@ -73,7 +78,7 @@ const router = createRouter({
           component: () => import('@/views/customer/DashboardView.vue'),
         },
       ],
-    }    
+    },
   ],
 })
 

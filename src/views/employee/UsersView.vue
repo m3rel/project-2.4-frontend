@@ -1,6 +1,6 @@
 <template>
   <div class="w-full">
-    <h2 class="text-2xl font-medium mb-6">Users</h2>
+    <h2 class="text-2xl font-medium mb-6">All users</h2>
 
     <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
       <table class="w-full text-sm">
