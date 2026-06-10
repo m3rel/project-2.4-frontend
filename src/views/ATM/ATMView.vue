@@ -1,9 +1,20 @@
 <template>
   <!-- main screen -->
-  <div v-if="currentScreen === 'main'">
-    <div class="flex items-center justify-center gap-2">
-      <button class="bg-amber-300 p-8" @click="goToTransaction('DEPOSIT')">Deposit</button>
-      <button class="bg-cyan-500 p-8" @click="goToTransaction('WITHDRAWAL')">Withdraw</button>
+  <div v-if="currentScreen === 'main'" class="flex flex-col items-center gap-4">
+    <h1 class="text-5xl m-10">What would you like to do?</h1>
+    <div class="flex gap-8">
+      <button
+        class="font-serif text-3xl bg-white rounded-2xl shadow-sm w-64 h-64 hover:bg-gray-50 transition-colors"
+        @click="goToTransaction('DEPOSIT')"
+      >
+        Deposit
+      </button>
+      <button
+        class="font-serif text-3xl bg-white rounded-2xl shadow-sm w-64 h-64 hover:bg-gray-50 transition-colors"
+        @click="goToTransaction('WITHDRAWAL')"
+      >
+        Withdraw
+      </button>
     </div>
   </div>
 
