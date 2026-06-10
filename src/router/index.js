@@ -13,6 +13,23 @@ const router = createRouter({
       redirect: '/login',
     },
     {
+      path: '/atm',
+      name: 'atmLogin',
+      component: () => import('@/views/ATM/ATMLoginView.vue'),
+    },
+    {
+      path: '/atm',
+      component: () => import('@/layouts/ATMLayout.vue'),
+      children: [
+        {
+          path: 'machine',
+          name: 'atmMachine',
+          meta: { requiresAuth: true, role: 'ROLE_CUSTOMER' },
+          component: () => import('@/views/ATM/ATMView.vue'),
+        },
+      ],
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('@/views/auth/LoginView.vue'),
@@ -42,6 +59,11 @@ const router = createRouter({
           component: () => import('@/views/employee/UsersView.vue'),
         },
         {
+          path: 'users/pending',
+          name: 'employeePendingUsers',
+          component: () => import('@/views/employee/PendingApprovalView.vue'),
+        },
+        {
           path: 'accounts',
           name: 'employeeAccounts',
           component: () => import('@/views/employee/AccountsView.vue'),
@@ -49,7 +71,7 @@ const router = createRouter({
         {
           path: '/accounts/:iban',
           name: 'account-details',
-          component: () => import('@/views/employee/AccountDetailsView.vue')
+          component: () => import('@/views/employee/AccountDetailsView.vue'),
         },
         {
           path: 'transactions',
@@ -78,7 +100,7 @@ const router = createRouter({
           component: () => import('@/views/customer/CustomerAccountView.vue'),
         },
       ],
-    }    
+    },
   ],
 })
 
@@ -86,18 +108,24 @@ router.beforeEach((to, from) => {
   const token = localStorage.getItem('token')
   const role = localStorage.getItem('role')
 
+  // only redirect if coming from regular login, not ATM login
   if ((to.name === 'login' || to.name === 'register') && token) {
     if (role === 'ROLE_EMPLOYEE') return { name: 'employeeDashboard' }
     if (role === 'ROLE_CUSTOMER') return { name: 'customerDashboard' }
   }
 
-  if (to.meta.requiresAuth && !token) {
-    return { name: 'login' }
+  // ATM login redirects to ATM machine
+  if (to.name === 'atmLogin' && token && role === 'ROLE_CUSTOMER') {
+    return { name: 'atmMachine' }
   }
 
-  if (to.meta.role && to.meta.role !== role) {
-    return { name: 'login' }
+  // block employees from ATM machine
+  if (to.name === 'atmMachine' && role === 'ROLE_EMPLOYEE') {
+    return { name: 'employeeDashboard' }
   }
+
+  if (to.meta.requiresAuth && !token) return { name: 'login' }
+  if (to.meta.role && to.meta.role !== role) return { name: 'login' }
 })
 
 export default router
