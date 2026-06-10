@@ -3,3 +3,7 @@
 .gradient-bg {
   background: linear-gradient(to bottom, #ffd6e7, #fff0d6, #e8d6ff);
 }
+
+.gradient-bg-atm {
+  background: linear-gradient(to bottom, #dcd8ff, #dbffee, #bce8ff);
+}

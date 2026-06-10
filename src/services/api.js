@@ -37,4 +37,18 @@ export const getUsers = (page = 0, size = 10) => {
   return api.get('/users', { params: { page, size } })
 }
 
+// Transactions
+export const deposit = (receiverIban, amount) => {
+  return api.post('/transactions/deposit', { receiverIban, amount })
+}
+
+export const withdrawal = (senderIban, amount) => {
+  return api.post('/transactions/withdrawal', { senderIban, amount })
+}
+
+// Accounts
+export const getMyAccounts = () => {
+  return api.get('/accounts/me')
+}
+
 export default api
