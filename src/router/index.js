@@ -95,9 +95,14 @@ const router = createRouter({
           component: () => import('@/views/customer/DashboardView.vue'),
         },
         {
-          path: 'accounts',
+          path: 'myaccounts',
           name: 'customerAccounts',
-          component: () => import('@/views/customer/CustomerAccountView.vue'),
+          component: () => import('@/views/customer/MyAccountsView.vue'),
+        },
+        {
+          path: 'mytransactions',
+          name: 'customerTransactions',
+          component: () => import('@/views/customer/MyTransactionsView.vue'),
         },
       ],
     },
