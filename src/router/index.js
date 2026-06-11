@@ -104,6 +104,10 @@ const router = createRouter({
           name: 'customerTransactions',
           component: () => import('@/views/customer/MyTransactionsView.vue'),
         },
+        {
+          path: ':iban/transactions',
+          component: () => import('@/views/customer/AccountTransactionsView.vue')
+        },
       ],
     },
   ],
