@@ -70,7 +70,7 @@ const handleLogin = async () => {
     } else {
       router.push('/customer/dashboard')
     }
-  } catch (error) {
+  } catch (err) {
     error.value = 'Invalid email or password'
   }
 }
