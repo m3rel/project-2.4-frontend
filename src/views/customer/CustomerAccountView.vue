@@ -16,25 +16,38 @@
       {{ error }}
     </div>
 
+    <div v-else class="bg-white rounded-xl shadow p-6 max-w-2xl">
+  <!-- Total Balance -->
+  <div class="mb-6 pb-4 border-b">
+    <h2 class="text-lg text-gray-500">Total Balance</h2>
+    <p class="text-3xl font-bold">€{{ totalBalance.toFixed(2) }}</p>
+  </div>
+
+  <!-- Accounts -->
+  <div class="space-y-4">
     <div
-      v-else
-      class="bg-white rounded-xl shadow p-6 max-w-2xl"
+      v-for="account in accounts"
+      :key="account.IBAN"
+      class="flex justify-between items-center border rounded-lg p-4"
     >
-      <div class="grid grid-cols-2 gap-4">
+      <div>
+        <h3 class="font-semibold">{{ account.accountName }}</h3>
+        <p class="text-sm text-gray-500">{{ account.IBAN }}</p>
+      </div>
 
-        <div v-for="account in accounts" :key="account.IBAN">
-            <h3>{{ account.accountName }}</h3>
-            <p>{{ account.IBAN }}</p>
-            <p>€{{ account.balance }}</p>
-        </div>
-
+      <div class="text-right">
+        <p class="font-bold text-lg">
+          €{{ account.balance.toFixed(2) }}
+        </p>
       </div>
     </div>
+  </div>
+  </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import axios from 'axios'
 import { useAuthStore } from '@/stores/auth'
 
@@ -63,6 +76,10 @@ const fetchAccount = async () => {
         loading.value = false
     }
 }
+
+const totalBalance = computed(() =>
+  accounts.value.reduce((sum, account) => sum + account.balance, 0)
+)
 
 const handleBack = () => {
   window.history.back()
