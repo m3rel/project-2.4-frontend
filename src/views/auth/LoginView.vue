@@ -63,11 +63,15 @@ const handleLogin = async () => {
       password: password.value,
     })
 
-    authStore.setAuth(response.data.token, response.data.role)
+    authStore.setAuth(response.data.token, response.data.role, response.data.status)
 
     if (response.data.role === 'ROLE_EMPLOYEE') {
       router.push('/employee/dashboard')
-    } else {
+    }
+    if (response.data.status === 'PENDING') {
+      router.push('/pending')
+    }
+    else {
       router.push('/customer/dashboard')
     }
   } catch (err) {

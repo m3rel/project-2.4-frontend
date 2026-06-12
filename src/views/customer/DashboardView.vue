@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-black">customer dashboardddddd</h1>
+  <h1 class="text-black">Welcome customer!</h1>
 </template>
 
 <script setup>

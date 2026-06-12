@@ -106,10 +106,11 @@ const router = createRouter({
         },
         {
           path: ':iban/transactions',
-          component: () => import('@/views/customer/AccountTransactionsView.vue')
+          component: () => import('@/views/customer/AccountTransactionsView.vue'),
         },
       ],
     },
+    { path: '/pending', name: 'pending', component: () => import('@/views/auth/PendingView.vue') },
   ],
 })
 
@@ -121,6 +122,9 @@ router.beforeEach((to, from) => {
   if ((to.name === 'login' || to.name === 'register') && token) {
     if (role === 'ROLE_EMPLOYEE') return { name: 'employeeDashboard' }
     if (role === 'ROLE_CUSTOMER') return { name: 'customerDashboard' }
+    if (role === 'ROLE_CUSTOMER' && status === 'PENDING' && to.name !== 'pending') {
+      return {name: 'pending'}
+    }
   }
 
   // ATM login redirects to ATM machine
