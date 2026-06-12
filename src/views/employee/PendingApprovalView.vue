@@ -61,6 +61,15 @@
             />
           </div>
           <div>
+            <label class="text-xs text-gray-500 mb-1 block">Savings Account Limit (€)</label>
+            <input
+              v-model="savingsLimit"
+              type="number"
+              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm"
+              placeholder="0"
+            />
+          </div>
+          <div>
             <label class="text-xs text-gray-500 mb-1 block">Daily Transfer Limit (€)</label>
             <input
               v-model="dailyTransferLimit"
@@ -106,6 +115,7 @@ const selectedUser = ref(null)
 const accountLimit = ref('')
 const dailyTransferLimit = ref('')
 const modalError = ref('')
+const savingsLimit = ref('')
 
 const fetchPendingUsers = async () => {
   loading.value = true
@@ -124,13 +134,14 @@ const fetchPendingUsers = async () => {
 const openApproveModal = (user) => {
   selectedUser.value = user
   accountLimit.value = ''
+  savingsLimit.value = ''
   dailyTransferLimit.value = ''
   modalError.value = ''
   showModal.value = true
 }
 
 const approveCustomer = async () => {
-  if (!accountLimit.value || !dailyTransferLimit.value) {
+  if (!accountLimit.value || !dailyTransferLimit.value || !savingsLimit.value) {
     modalError.value = 'Please fill in all fields'
     return
   }
@@ -166,7 +177,7 @@ const approveCustomer = async () => {
         userId: selectedUser.value.id,
         accountName: `${selectedUser.value.firstName} Savings`,
         accountType: 'SAVINGS',
-        accountLimit: 0.0,
+        accountLimit: Number(savingsLimit.value),
         interestRate: 1.5,
       },
       { headers: { Authorization: `Bearer ${authStore.token}` } },
