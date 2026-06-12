@@ -52,7 +52,7 @@
 
         <div class="flex flex-col gap-3">
           <div>
-            <label class="text-xs text-gray-500 mb-1 block">Account Limit (€)</label>
+            <label class="text-xs text-gray-500 mb-1 block">Checkings Account Limit (€)</label>
             <input
               v-model="accountLimit"
               type="number"
