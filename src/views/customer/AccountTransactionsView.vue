@@ -12,6 +12,26 @@ const loading = ref(true)
 const error = ref('')
 const account = ref(null)
 
+const filters = ref({
+  startDate: '',
+  endDate: '',
+  minAmount: '',
+  maxAmount: '',
+  otherIban: ''
+})
+
+const clearFilters = () => {
+  filters.value = {
+    startDate: '',
+    endDate: '',
+    minAmount: '',
+    maxAmount: '',
+    otherIban: ''
+  }
+
+  fetchTransactions()
+}
+
 const fetchTransactions = async () => {
   try {
     const response = await axios.get(
@@ -19,6 +39,13 @@ const fetchTransactions = async () => {
       {
         headers: {
           Authorization: `Bearer ${authStore.token}`
+        },
+        params: {
+          startDate: filters.value.startDate || undefined,
+          endDate: filters.value.endDate || undefined,
+          minAmount: filters.value.minAmount || undefined,
+          maxAmount: filters.value.maxAmount || undefined,
+          otherIban: filters.value.otherIban || undefined
         }
       }
     )
@@ -26,8 +53,6 @@ const fetchTransactions = async () => {
     transactions.value = response.data.content
   } catch (err) {
     error.value = 'Failed to load transactions'
-  } finally {
-    loading.value = false
   }
 }
 
@@ -142,7 +167,60 @@ onMounted(fetchTransactions)
     <h1 class="text-3xl font-bold mb-6">
       Transactions
     </h1>
+    <div class="bg-white rounded-xl shadow p-4 mb-6">
+  <h2 class="font-semibold mb-4">Filters</h2>
 
+  <div class="grid grid-cols-5 gap-4">
+
+    <input
+      v-model="filters.otherIban"
+      placeholder="Other IBAN"
+      class="border rounded p-2"
+    />
+
+    <input
+      v-model="filters.minAmount"
+      type="number"
+      placeholder="Minimum amount"
+      class="border rounded p-2"
+    />
+
+    <input
+      v-model="filters.maxAmount"
+      type="number"
+      placeholder="Maximum amount"
+      class="border rounded p-2"
+    />
+
+      <input
+        v-model="filters.startDate"
+        type="datetime-local"
+        class="border rounded p-2"
+      />
+
+      <input
+        v-model="filters.endDate"
+        type="datetime-local"
+        class="border rounded p-2"
+      />
+    </div>
+
+    <div class="mt-4 flex gap-2">
+      <button
+        @click="fetchTransactions"
+        class="bg-gray-900 text-white px-4 py-2 rounded"
+      >
+        Apply Filters
+      </button>
+
+      <button
+        @click="clearFilters"
+        class="border px-4 py-2 rounded"
+      >
+        Clear
+      </button>
+    </div>
+  </div>
 
     <div v-if="loading">Loading...</div>
 
