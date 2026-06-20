@@ -110,7 +110,7 @@ onMounted(fetchTransactions)
     <div class="flex justify-between items-start">
       <div>
         <h1 class="text-2xl font-bold">
-          {{ account.accountName }}
+          {{ account.accountName }}  
         </h1>
 
         <p class="text-gray-500">
