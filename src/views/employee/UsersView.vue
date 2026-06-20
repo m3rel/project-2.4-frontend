@@ -10,6 +10,7 @@
             <th class="p-4 font-medium">Email</th>
             <th class="p-4 font-medium">BSN</th>
             <th class="p-4 font-medium">Phone</th>
+            <th class="p-4 font-medium">Daily limit</th>
             <th class="p-4 font-medium">Role</th>
             <th class="p-4 font-medium">Status</th>
           </tr>
@@ -18,12 +19,14 @@
           <tr
             v-for="user in users"
             :key="user.id"
-            class="border-b border-gray-50 hover:bg-gray-50 transition-colors"
+            class="border-b cursor-pointer border-gray-50 hover:bg-gray-50 transition-colors"
+            @click="openUserModal(user)"
           >
             <td class="p-4">{{ user.firstName }} {{ user.lastName }}</td>
             <td class="p-4 text-gray-500">{{ user.email }}</td>
             <td class="p-4 text-gray-500">{{ user.bsn }}</td>
             <td class="p-4 text-gray-500">{{ user.phoneNumber }}</td>
+            <td class="p-4 text-gray-500">{{ user.dailyTransferLimit}}</td>
             <td class="p-4">
               <span
                 class="px-2 py-1 rounded-lg text-xs font-medium"
@@ -77,17 +80,28 @@
 
     <p v-if="error" class="text-red-500 text-sm mt-4">{{ error }}</p>
   </div>
+
+  <UserDetailModal
+    v-if="selectedUser"
+    :user="selectedUser"
+    @close="selectedUser = null"
+    @saved="selectedUser = null; fetchUsers(currentPage)"
+  />
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getUsers } from '@/services/api.js'
+import UserDetailModal from '@/views/employee/UserDetailsModal.vue'
 
 const users = ref([])
 const currentPage = ref(0)
 const totalPages = ref(0)
 const totalElements = ref(0)
 const error = ref('')
+const selectedUser = ref(null)
+
+const openUserModal = (user) => (selectedUser.value = user)
 
 const fetchUsers = async (page = 0) => {
   try {
