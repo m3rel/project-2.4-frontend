@@ -99,40 +99,40 @@ onMounted(fetchAccount)
         {{ account.user?.lastName }}
       </p>
       <div class="space-y-4">
-      <h1 class="text-3xl font-bold mb-6">
-          Edit Account Details
-      </h1>
-      <div>
-        <label class="block mb-1">Account Name</label>
-        <input
-          v-model="form.accountName"
-          class="border rounded p-2 w-full"
-        />
-      </div>
+        <h1 class="text-3xl font-bold mb-6">
+            Edit Account Details
+        </h1>
+        <div>
+          <label class="block mb-1">Account Name</label>
+          <input
+            v-model="form.accountName"
+            class="border rounded p-2 w-full"
+          />
+        </div>
 
-      <div>
-        <label class="block mb-1">Account Limit</label>
-        <input
-          v-model.number="form.accountLimit"
-          type="number"
-          class="border rounded p-2 w-full"
-        />
-      </div>
+        <div>
+          <label class="block mb-1">Account Limit</label>
+          <input
+            v-model.number="form.accountLimit"
+            type="number"
+            class="border rounded p-2 w-full"
+          />
+        </div>
 
-      <div>
-        <label class="block mb-1">Status</label>
-        <select
-          v-model="form.accountStatus"
-          class="border rounded p-2 w-full"
-        >
-          <option value="ACTIVE">ACTIVE</option>
-          <option value="CLOSED">CLOSED</option>
-          <option value="BLOCKED">BLOCKED</option>
-        </select>
+        <div>
+          <label class="block mb-1">Status</label>
+          <select
+            v-model="form.accountStatus"
+            class="border rounded p-2 w-full"
+          >
+            <option value="ACTIVE">ACTIVE</option>
+            <option value="CLOSED">CLOSED</option>
+            <option value="BLOCKED">BLOCKED</option>
+          </select>
+        </div>
       </div>
     </div>
-  </div>
-  
+    
   
 
     <button

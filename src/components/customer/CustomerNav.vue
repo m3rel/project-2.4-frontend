@@ -9,7 +9,7 @@
       class="p-3 rounded-lg text-sm text-gray-700 hover:bg-white/40 transition-colors"
       active-class="bg-white/60 font-medium text-gray-900"
     >
-      My accounts
+      Your accounts
     </router-link>
 
     <router-link
