@@ -186,11 +186,9 @@ const approveCustomer = async () => {
     showModal.value = false
     await fetchPendingUsers() // refresh the list
   } catch (err) {
-    const message =
-      err.response?.data?.errors?.accountLimit ||
-      err.response?.data?.message ||
-      'Something went wrong, please try again'
-    modalError.value = message
+    const data = err.response?.data
+    const firstFieldError = data?.fieldErrors ? Object.values(data.fieldErrors)[0] : null
+    modalError.value = firstFieldError || data?.message || 'Something went wrong, please try again'
     console.error(err)
   }
 }
