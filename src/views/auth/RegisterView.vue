@@ -92,7 +92,23 @@ const phoneNumber = ref('')
 const bsn = ref('')
 const error = ref('')
 
+const validateForm = () => {
+  const namePattern = /^[A-Za-z\s\-']+$/
+  if (!namePattern.test(firstName.value)) {
+    error.value = 'First name can only contain letters'
+    return false
+  }
+  if (!namePattern.test(lastName.value)) {
+    error.value = 'Last name can only contain letters'
+    return false
+  }
+  return true
+}
+
 const handleSignUp = async () => {
+  error.value = null
+  if (!validateForm()) return // stops here and shows error
+
   try {
     await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, {
       firstName: firstName.value,
@@ -105,11 +121,9 @@ const handleSignUp = async () => {
 
     router.push('/login')
   } catch (err) {
-  const data = err.response?.data
-  const firstFieldError = data?.fieldErrors
-    ? Object.values(data.fieldErrors)[0]
-    : null
-  error.value = firstFieldError || data?.message || 'Something went wrong'
-}
+    const data = err.response?.data
+    const firstFieldError = data?.fieldErrors ? Object.values(data.fieldErrors)[0] : null
+    error.value = firstFieldError || data?.message || 'Something went wrong'
+  }
 }
 </script>

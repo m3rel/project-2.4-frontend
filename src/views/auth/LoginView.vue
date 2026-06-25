@@ -66,13 +66,11 @@ const handleLogin = async () => {
     authStore.setAuth(response.data.token, response.data.role, response.data.status)
 
     if (response.data.role === 'ROLE_EMPLOYEE') {
-      router.push('/employee/dashboard')
-    }
-    if (response.data.status === 'PENDING') {
-      router.push('/pending')
-    }
-    else {
-      router.push('/customer/myaccounts')
+      await router.push('/employee/dashboard')
+    } else if (response.data.status === 'PENDING') {
+      await router.push('/pending')
+    } else {
+      await router.push('/customer/myaccounts')
     }
   } catch (err) {
     error.value = 'Invalid email or password'
