@@ -105,7 +105,11 @@ const handleSignUp = async () => {
 
     router.push('/login')
   } catch (err) {
-    error.value = err.response?.data?.message || 'Something went wrong'
-  }
+  const data = err.response?.data
+  const firstFieldError = data?.fieldErrors
+    ? Object.values(data.fieldErrors)[0]
+    : null
+  error.value = firstFieldError || data?.message || 'Something went wrong'
+}
 }
 </script>
