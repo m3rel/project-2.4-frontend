@@ -64,7 +64,9 @@ const save = async () => {
     )
     emit('saved')
   } catch (err) {
-    error.value = 'Failed to save, please try again'
+    const data = err.response?.data
+    const firstFieldError = data?.fieldErrors ? Object.values(data.fieldErrors)[0] : null
+    error.value = firstFieldError || data?.message || 'Failed to save, please try again'
   }
 }
 </script>

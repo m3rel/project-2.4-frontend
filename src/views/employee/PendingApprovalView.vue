@@ -147,44 +147,18 @@ const approveCustomer = async () => {
   }
 
   try {
-    // 1. update user status to APPROVED and set daily limit
-    await axios.put(
-      `${import.meta.env.VITE_API_URL}/users/${selectedUser.value.id}`,
+    await axios.post(
+      `${import.meta.env.VITE_API_URL}/users/${selectedUser.value.id}/approve`,
       {
-        status: 'APPROVED',
         dailyTransferLimit: Number(dailyTransferLimit.value),
-      },
-      { headers: { Authorization: `Bearer ${authStore.token}` } },
-    )
-
-    // 2. create checking account
-    await axios.post(
-      `${import.meta.env.VITE_API_URL}/accounts`,
-      {
-        userId: selectedUser.value.id,
-        accountName: `${selectedUser.value.firstName} Checking`,
-        accountType: 'CHECKING',
-        accountLimit: Number(accountLimit.value),
-        interestRate: 0.0,
-      },
-      { headers: { Authorization: `Bearer ${authStore.token}` } },
-    )
-
-    // 3. create savings account
-    await axios.post(
-      `${import.meta.env.VITE_API_URL}/accounts`,
-      {
-        userId: selectedUser.value.id,
-        accountName: `${selectedUser.value.firstName} Savings`,
-        accountType: 'SAVINGS',
-        accountLimit: Number(savingsLimit.value),
-        interestRate: 1.5,
+        checkingAccountLimit: Number(accountLimit.value),
+        savingsAccountLimit: Number(savingsLimit.value),
       },
       { headers: { Authorization: `Bearer ${authStore.token}` } },
     )
 
     showModal.value = false
-    await fetchPendingUsers() // refresh the list
+    await fetchPendingUsers()
   } catch (err) {
     const data = err.response?.data
     const firstFieldError = data?.fieldErrors ? Object.values(data.fieldErrors)[0] : null
