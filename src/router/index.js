@@ -87,13 +87,13 @@ const router = createRouter({
       children: [
         {
           path: '',
-          redirect: { name: 'customerDashboard' },
+          redirect: { name: 'customerAccounts' },
         },
-        {
-          path: 'dashboard',
-          name: 'customerDashboard',
-          component: () => import('@/views/customer/DashboardView.vue'),
-        },
+        // {
+        //   path: 'dashboard',
+        //   name: 'customerDashboard',
+        //   component: () => import('@/views/customer/DashboardView.vue'),
+        // },
         {
           path: 'myaccounts',
           name: 'customerAccounts',
@@ -121,7 +121,7 @@ router.beforeEach((to, from) => {
   // only redirect if coming from regular login, not ATM login
   if ((to.name === 'login' || to.name === 'register') && token) {
     if (role === 'ROLE_EMPLOYEE') return { name: 'employeeDashboard' }
-    if (role === 'ROLE_CUSTOMER') return { name: 'customerDashboard' }
+    if (role === 'ROLE_CUSTOMER') return { name: 'customerAccounts' }
     if (role === 'ROLE_CUSTOMER' && status === 'PENDING' && to.name !== 'pending') {
       return {name: 'pending'}
     }
