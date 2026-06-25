@@ -8,9 +8,7 @@
       Back
     </button>
 
-    <div v-if="loading">
-      Loading...
-    </div>
+    <div v-if="loading">Loading...</div>
 
     <div v-else-if="error" class="text-red-500">
       {{ error }}
@@ -37,9 +35,7 @@
           </div>
 
           <div class="text-right">
-            <p class="font-bold text-lg">
-              €{{ account.balance.toFixed(2) }}
-            </p>
+            <p class="font-bold text-lg">€{{ account.balance.toFixed(2) }}</p>
           </div>
         </div>
       </div>
@@ -67,26 +63,23 @@ const error = ref('')
 
 const fetchAccount = async () => {
   try {
-    const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/accounts/me`,
-    {
-        headers: {
-        Authorization: `Bearer ${authStore.token}`
-        }
-    }
-    )
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/accounts/me`, {
+      headers: {
+        Authorization: `Bearer ${authStore.token}`,
+      },
+    })
 
-        accounts.value = response.data
-    } catch (err) {
-        console.error(err)
-        error.value = 'Failed to load accounts'
-    } finally {
-        loading.value = false
-    }
+    accounts.value = response.data
+  } catch (err) {
+    console.error(err)
+    error.value = 'Failed to load accounts'
+  } finally {
+    loading.value = false
+  }
 }
 
 const totalBalance = computed(() =>
-  accounts.value.reduce((sum, account) => sum + account.balance, 0)
+  accounts.value.reduce((sum, account) => sum + account.balance, 0),
 )
 
 const handleBack = () => {

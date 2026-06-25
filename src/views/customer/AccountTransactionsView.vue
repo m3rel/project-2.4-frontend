@@ -94,7 +94,7 @@ onMounted(fetchTransactions)
     @click="handleBack"
     class="p-3 rounded-lg text-sm text-gray-700 hover:bg-white/40 transition-colors text-left"
   >
-    Back
+    ← Back
   </button>
   <div class="p-8">
     <div v-if="account" class="bg-white rounded-xl shadow p-6 mb-6">
@@ -226,7 +226,6 @@ onMounted(fetchTransactions)
           </span>
           <span v-else class="font-semibold text-sm"> -€{{ transaction.amount.toFixed(2) }} </span>
         </div>
-
       </div>
     </div>
   </div>
