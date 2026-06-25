@@ -17,7 +17,7 @@ const filters = ref({
   endDate: '',
   minAmount: '',
   maxAmount: '',
-  otherIban: ''
+  otherIban: '',
 })
 
 const clearFilters = () => {
@@ -26,7 +26,7 @@ const clearFilters = () => {
     endDate: '',
     minAmount: '',
     maxAmount: '',
-    otherIban: ''
+    otherIban: '',
   }
 
   fetchTransactions()
@@ -38,16 +38,16 @@ const fetchTransactions = async () => {
       `${import.meta.env.VITE_API_URL}/transactions/${route.params.iban}`,
       {
         headers: {
-          Authorization: `Bearer ${authStore.token}`
+          Authorization: `Bearer ${authStore.token}`,
         },
         params: {
           startDate: filters.value.startDate || undefined,
           endDate: filters.value.endDate || undefined,
           minAmount: filters.value.minAmount || undefined,
           maxAmount: filters.value.maxAmount || undefined,
-          otherIban: filters.value.otherIban || undefined
-        }
-      }
+          otherIban: filters.value.otherIban || undefined,
+        },
+      },
     )
 
     transactions.value = response.data.content
@@ -59,22 +59,16 @@ const fetchTransactions = async () => {
 const fetchData = async () => {
   try {
     const [accountResponse, transactionResponse] = await Promise.all([
-      axios.get(
-        `${import.meta.env.VITE_API_URL}/accounts/${route.params.iban}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authStore.token}`
-          }
-        }
-      ),
-      axios.get(
-        `${import.meta.env.VITE_API_URL}/transactions/${route.params.iban}`,
-        {
-          headers: {
-            Authorization: `Bearer ${authStore.token}`
-          }
-        }
-      )
+      axios.get(`${import.meta.env.VITE_API_URL}/accounts/${route.params.iban}`, {
+        headers: {
+          Authorization: `Bearer ${authStore.token}`,
+        },
+      }),
+      axios.get(`${import.meta.env.VITE_API_URL}/transactions/${route.params.iban}`, {
+        headers: {
+          Authorization: `Bearer ${authStore.token}`,
+        },
+      }),
     ])
 
     account.value = accountResponse.data
@@ -95,7 +89,7 @@ const handleBack = () => {
 onMounted(fetchTransactions)
 </script>
 
-<template>  
+<template>
   <button
     @click="handleBack"
     class="p-3 rounded-lg text-sm text-gray-700 hover:bg-white/40 transition-colors text-left"
@@ -103,124 +97,96 @@ onMounted(fetchTransactions)
     Back
   </button>
   <div class="p-8">
-    <div
-    v-if="account"
-    class="bg-white rounded-xl shadow p-6 mb-6"
-  >
-    <div class="flex justify-between items-start">
-      <div>
-        <h1 class="text-2xl font-bold">
-          {{ account.accountName }}  
-        </h1>
+    <div v-if="account" class="bg-white rounded-xl shadow p-6 mb-6">
+      <div class="flex justify-between items-start">
+        <div>
+          <h1 class="text-2xl font-bold">
+            {{ account.accountName }}
+          </h1>
 
-        <p class="text-gray-500">
-          {{ account.IBAN }}
-        </p>
+          <p class="text-gray-500">
+            {{ account.IBAN }}
+          </p>
+        </div>
+
+        <div class="text-right">
+          <p class="text-sm text-gray-500">Balance</p>
+          <p class="text-2xl font-bold">€{{ account.balance.toFixed(2) }}</p>
+        </div>
       </div>
 
-      <div class="text-right">
-        <p class="text-sm text-gray-500">Balance</p>
-        <p class="text-2xl font-bold">
-          €{{ account.balance.toFixed(2) }}
-        </p>
-      </div>
-    </div>
+      <div class="grid grid-cols-2 gap-4 mt-6 text-sm">
+        <div>
+          <span class="text-gray-500">Type</span>
+          <p>{{ account.accountType }}</p>
+        </div>
 
-    <div class="grid grid-cols-2 gap-4 mt-6 text-sm">
-      <div>
-        <span class="text-gray-500">Type</span>
-        <p>{{ account.accountType }}</p>
-      </div>
+        <div>
+          <span class="text-gray-500">Status</span>
+          <p>{{ account.accountStatus }}</p>
+        </div>
 
-      <div>
-        <span class="text-gray-500">Status</span>
-        <p>{{ account.accountStatus }}</p>
-      </div>
+        <div>
+          <span class="text-gray-500">Limit</span>
+          <p>€{{ account.accountLimit }}</p>
+        </div>
 
-      <div>
-        <span class="text-gray-500">Limit</span>
-        <p>€{{ account.accountLimit }}</p>
-      </div>
+        <div>
+          <span class="text-gray-500">Interest Rate</span>
+          <p>{{ account.interestRate }}%</p>
+        </div>
 
-      <div>
-        <span class="text-gray-500">Interest Rate</span>
-        <p>{{ account.interestRate }}%</p>
-      </div>
+        <div>
+          <span class="text-gray-500">Created</span>
+          <p>
+            {{ new Date(account.dateCreated).toLocaleDateString() }}
+          </p>
+        </div>
 
-      <div>
-        <span class="text-gray-500">Created</span>
-        <p>
-          {{ new Date(account.dateCreated).toLocaleDateString() }}
-        </p>
-      </div>
-
-      <div v-if="account.user">
-        <span class="text-gray-500">Owner</span>
-        <p>
-          {{ account.user.firstName }}
-          {{ account.user.lastName }}
-        </p>
+        <div v-if="account.user">
+          <span class="text-gray-500">Owner</span>
+          <p>
+            {{ account.user.firstName }}
+            {{ account.user.lastName }}
+          </p>
+        </div>
       </div>
     </div>
-  </div>
 
-    <h1 class="text-3xl font-bold mb-6">
-      Transactions
-    </h1>
+    <h1 class="text-3xl font-bold mb-6">Transactions</h1>
     <div class="bg-white rounded-xl shadow p-4 mb-6">
-  <h2 class="font-semibold mb-4">Filters</h2>
+      <h2 class="font-semibold mb-4">Filters</h2>
 
-  <div class="grid grid-cols-5 gap-4">
+      <div class="grid grid-cols-5 gap-4">
+        <input v-model="filters.otherIban" placeholder="Other IBAN" class="border rounded p-2" />
 
-    <input
-      v-model="filters.otherIban"
-      placeholder="Other IBAN"
-      class="border rounded p-2"
-    />
+        <input
+          v-model="filters.minAmount"
+          type="number"
+          placeholder="Minimum amount"
+          class="border rounded p-2"
+        />
 
-    <input
-      v-model="filters.minAmount"
-      type="number"
-      placeholder="Minimum amount"
-      class="border rounded p-2"
-    />
+        <input
+          v-model="filters.maxAmount"
+          type="number"
+          placeholder="Maximum amount"
+          class="border rounded p-2"
+        />
 
-    <input
-      v-model="filters.maxAmount"
-      type="number"
-      placeholder="Maximum amount"
-      class="border rounded p-2"
-    />
+        <input v-model="filters.startDate" type="datetime-local" class="border rounded p-2" />
 
-      <input
-        v-model="filters.startDate"
-        type="datetime-local"
-        class="border rounded p-2"
-      />
+        <input v-model="filters.endDate" type="datetime-local" class="border rounded p-2" />
+      </div>
 
-      <input
-        v-model="filters.endDate"
-        type="datetime-local"
-        class="border rounded p-2"
-      />
+      <div class="mt-4 flex gap-2">
+        <button @click="fetchTransactions" class="bg-gray-900 text-white px-4 py-2 rounded">
+          Apply Filters
+        </button>
+
+        <button @click="clearFilters" class="border px-4 py-2 rounded">Clear</button>
+      </div>
     </div>
-
-    <div class="mt-4 flex gap-2">
-      <button
-        @click="fetchTransactions"
-        class="bg-gray-900 text-white px-4 py-2 rounded"
-      >
-        Apply Filters
-      </button>
-
-      <button
-        @click="clearFilters"
-        class="border px-4 py-2 rounded"
-      >
-        Clear
-      </button>
-    </div>
-  </div>
 
     <div v-if="loading">Loading...</div>
 
@@ -242,20 +208,25 @@ onMounted(fetchTransactions)
           <p class="text-xs text-gray-400">
             {{ new Date(transaction.timestamp).toLocaleString() }}
           </p>
-          <p
-            v-if="transaction.initiatedBy"
-            class="text-xs text-gray-400"
-          >
+          <p v-if="transaction.initiatedBy" class="text-xs text-gray-400">
             By {{ transaction.initiatedBy.firstName }}
             {{ transaction.initiatedBy.lastName }}
           </p>
         </div>
 
         <div class="text-right">
-          <p class="font-bold text-lg">
-            €{{ transaction.amount.toFixed(2) }}
-          </p>
+          <span
+            v-if="
+              transaction.type === 'DEPOSIT' ||
+              (transaction.type === 'TRANSFER' && transaction.receiverIban === account.IBAN)
+            "
+            class="inline-block bg-green-100 text-green-800 font-semibold px-3 py-1 rounded-full text-sm"
+          >
+            +€{{ transaction.amount.toFixed(2) }}
+          </span>
+          <span v-else class="font-semibold text-sm"> -€{{ transaction.amount.toFixed(2) }} </span>
         </div>
+
       </div>
     </div>
   </div>
