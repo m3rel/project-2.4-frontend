@@ -141,7 +141,7 @@ const openApproveModal = (user) => {
 }
 
 const approveCustomer = async () => {
-  if (!accountLimit.value || !dailyTransferLimit.value || !savingsLimit.value) {
+  if (accountLimit.value === '' || savingsLimit.value === '' || dailyTransferLimit.value === '') {
     modalError.value = 'Please fill in all fields'
     return
   }
@@ -186,7 +186,11 @@ const approveCustomer = async () => {
     showModal.value = false
     await fetchPendingUsers() // refresh the list
   } catch (err) {
-    modalError.value = 'Something went wrong, please try again'
+    const message =
+      err.response?.data?.errors?.accountLimit ||
+      err.response?.data?.message ||
+      'Something went wrong, please try again'
+    modalError.value = message
     console.error(err)
   }
 }

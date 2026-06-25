@@ -72,7 +72,7 @@ const handleLogin = async () => {
       router.push('/pending')
     }
     else {
-      router.push('/customer/dashboard')
+      router.push('/customer/myaccounts')
     }
   } catch (err) {
     error.value = 'Invalid email or password'

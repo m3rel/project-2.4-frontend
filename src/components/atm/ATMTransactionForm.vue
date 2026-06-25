@@ -83,8 +83,8 @@ async function handleSubmit() {
 
     emit('confirmed', response.data)
   } catch (err) {
-    //console.log(err.response.data)
-    error.value = err.response?.data?.message || 'Something went wrong'
+    const data = err.response?.data
+    error.value = data?.fieldErrors?.amount || data?.message || 'Something went wrong'
   } finally {
     loading.value = false
   }
